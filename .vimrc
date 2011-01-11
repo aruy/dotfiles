@@ -208,11 +208,11 @@ nnoremap t  <Nop>
 "「飛ぶ」
 nnoremap tt  <C-]>
 "「進む」
-nnoremap tj  ;<C-u>tag<CR>
+nnoremap tj  :<C-u>tag<CR>
 "「戻る」
-nnoremap tk  ;<C-u>pop<CR>
+nnoremap tk  :<C-u>pop<CR>
 "履歴一覧
-nnoremap tl  ;<C-u>tags<CR>
+nnoremap tl  :<C-u>tags<CR>
 
 "-------------------------------------------------------------------------------
 " 検索設定 Search
@@ -223,12 +223,12 @@ set smartcase  " 検索文字列に大文字が含まれている場合は区別
 set incsearch  " インクリメンタルサーチ
 set hlsearch   " 検索文字をハイライト
 "Escの2回押しでハイライト消去
-nmap <ESC><ESC> ;nohlsearch<CR><ESC>
+nmap <ESC><ESC> :nohlsearch<CR><ESC>
 
 "選択した文字列を検索
 vnoremap <silent> // y/<C-R>=escape(@", '\\/.*$^~[]')<CR><CR>
 "選択した文字列を置換
-vnoremap /r "xy;%s/<C-R>=escape(@x, '\\/.*$^~[]')<CR>//gc<Left><Left><Left>
+vnoremap /r "xy:%s/<C-R>=escape(@x, '\\/.*$^~[]')<CR>//gc<Left><Left><Left>
 
 "s*置換後文字列/g<Cr>でカーソル下のキーワードを置換
 nnoremap <expr> s* ':%substitute/\<' . expand('<cword>') . '\>/'
@@ -274,19 +274,21 @@ noremap <Space>j <C-f>
 noremap <Space>k <C-b>
 
 " spaceで次のbufferへ。back-spaceで前のbufferへ
-nmap <Space> ;MBEbn<CR>
-nmap <BS> ;MBEbp<CR>
+" nmap <Space> :MBEbn<CR>
+" nmap <BS> :MBEbp<CR>
 
 " F2で前のバッファ
-map <F2> <ESC>;bp<CR>
+map <F2> <ESC>:bp<CR>
 " F3で次のバッファ
-map <F3> <ESC>;bn<CR>
+map <F3> <ESC>:bn<CR>
 " F4でバッファを削除する
-map <F4> <ESC>;bw<CR>
+map <F4> <ESC>:bw<CR>
 
 "フレームサイズを怠惰に変更する
-map <kPlus> <C-W>+
-map <kMinus> <C-W>-
+" map <kPlus> <C-W>+
+" map <kPlus> <C-W>+
+" map <kMinus> <C-W>-
+" map <kMinus> <C-W>-
 
 " 前回終了したカーソル行に移動
 autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g`\"" | endif
@@ -315,9 +317,9 @@ vnoremap v $h
 
 " CTRL-hjklでウィンドウ移動
 nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-k>j
-nnoremap <C-l> <C-l>j
-nnoremap <C-h> <C-h>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+nnoremap <C-h> <C-w>h
 
 
 "-------------------------------------------------------------------------------
@@ -439,16 +441,16 @@ hi PmenuSbar ctermbg=0 ctermfg=9
 " 編集関連 Edit
 "-------------------------------------------------------------------------------
 
-" insertモードを抜けるとIMEオフ
-" set noimdisable
-" set iminsert=0 imsearch=0
-" set noimcmdline
-" inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
+"insertモードを抜けるとIMEオフ
+set noimdisable
+set iminsert=0 imsearch=0
+set noimcmdline
+inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
 
 " yeでそのカーソル位置にある単語をレジスタに追加
-nmap ye ;let @"=expand("<cword>")<CR>
+nmap ye :let @"=expand("<cword>")<CR>
 " Visualモードでのpで選択範囲をレジスタの内容に置き換える
-vnoremap p <Esc>;let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
+vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
 
 " Tabキーを空白に変換
 set expandtab
@@ -512,22 +514,22 @@ inoremap <expr> ,dt strftime('%H:%M:%S')
 " YankRing.vim
 "------------------------------------
 " Yankの履歴参照
-nmap ,y ;YRShow<CR>
+nmap ,y :YRShow<CR>
 
 "------------------------------------
 " MiniBufExplorer
 "------------------------------------
 "set minibfexp
-let g:miniBufExplMapWindowNavVim=1 "hjklで移動
-let g:miniBufExplSplitBelow=0  " Put new window above
-let g:miniBufExplMapWindowNavArrows=1
-let g:miniBufExplMapCTabSwitchBufs=1
-let g:miniBufExplModSelTarget=1
-let g:miniBufExplSplitToEdge=1
-let g:miniBufExplMaxSize = 10
+" let g:miniBufExplMapWindowNavVim=1 "hjklで移動
+" let g:miniBufExplSplitBelow=0  " Put new window above
+" let g:miniBufExplMapWindowNavArrows=1
+" let g:miniBufExplMapCTabSwitchBufs=1
+" let g:miniBufExplModSelTarget=1
+" let g:miniBufExplSplitToEdge=1
+" let g:miniBufExplMaxSize = 10
 
-":TmでMiniBufExplorerの表示トグル
-command! Mt :TMiniBufExplorer
+" ":TmでMiniBufExplorerの表示トグル
+" command! Mt :TMiniBufExplorer
 
 "------------------------------------
 " Align
@@ -624,7 +626,7 @@ nnoremap <Space>gp :<C-u>Git push
 " BufExplorer
 "------------------------------------
 "<Leader>l<Space>でBufferList
-nnoremap <Leader>l<Space> :BufExplorer<CR>
+" nnoremap <Leader>l<Space> :BufExplorer<CR>
 
 "------------------------------------
 " VTreeExplorer
@@ -676,10 +678,10 @@ map R <Plug>(operator-replace)
 "------------------------------------
 " hatena.vim
 "------------------------------------
-let g:hatena_user='yuroyoro'
+let g:hatena_user='aruy'
 
 "------------------------------------
-" sumartword.vim
+" smartword.vim
 "------------------------------------
 noremap ,w  w
 noremap ,b  b
